@@ -20,11 +20,11 @@ one_time_keyboard - разовая ли клавиатура, (bool)
 """
 # Создание обычных кнопок
 button_1 = KeyboardButton(text='Рассчитать норму калорий')
-# button_2 = KeyboardButton(text='Информация')
+button_2 = KeyboardButton(text='Информация')
 
 # Запуск обычных кнопок
-kb.add(button_1)
-# kb.row(button_1, button_2) # кнопки в линию
+# kb.add(button_1)
+kb.row(button_1, button_2) # кнопки в линию
 
 # инициализация Inline-клавиатуры
 kb_inline = InlineKeyboardMarkup()
@@ -50,12 +50,18 @@ kb_inline.add(button_1_inline, button_2_inline)
 @dp.message_handler(commands=['start'])
 async def start(message):
     print('Кто-то вошел в бот') # это сообщения для меня (вывода на консоль)
-    await message.answer(f'Привет!\nЯ бот помогающий твоему здоровью.', reply_markup=kb)
+    await message.answer(f'Привет !\nЯ бот помогающий твоему здоровью.', reply_markup=kb)
+
+@dp.message_handler(text='Информация')
+async def mail_info(message):
+    print('Поступил запрос по Информации')
+    await message.answer(f"Я вчера бросил курить и пить, поэтому могу рассказать как начать здоровый образ жизни."
+                         f"\nНачни с простого... сделай как я !")
 
 
 @dp.message_handler(text='Рассчитать норму калорий')
 async def main_menu(message):
-    await message.answer('Выбери опцию', reply_markup=kb_inline)  # активизировал Inline-клаву
+    await message.answer('Выберите опцию', reply_markup=kb_inline)  # активизировал Inline-клаву
 
 
 @dp.callback_query_handler(text='formulas')
